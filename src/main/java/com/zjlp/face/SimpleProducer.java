@@ -10,14 +10,10 @@ import java.util.Properties;
  */
 public class SimpleProducer {
     public static void main(String args[]) {
-        if (args.length == 0) {
-            System.out.println("Enter topic name");
-            return;
-        }
-        String topicName = args[0].toString();
+        String topicName = args.length > 0 ? args[0] : "test";
         Properties props = new Properties();
         props.put("client.id","112");
-        props.put("bootstrap.servers","192.168.175.12:9092,192.168.175.11:9092");
+        props.put("bootstrap.servers","192.168.70.13:9092,192.168.70.12:9092,192.168.70.11:9092");
         props.put("acks","all");
         //Setting a value greater than zero will cause the producer to resend any record whose send fails with a potentially transient error
         props.put("retries", 0);
@@ -34,9 +30,11 @@ public class SimpleProducer {
 
         Producer<String, String> producer = new KafkaProducer<String, String>(props);
 
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < 10; i++){
             producer.send(new ProducerRecord<String, String>(topicName,
-                    Integer.toString(i), Integer.toString(i)+"vv"));
+                    Integer.toString(i), Integer.toString(i)+"xxx"));
+        }
+
         System.out.println("Message sent successfully");
         producer.close();
     }
